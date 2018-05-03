@@ -9,12 +9,6 @@ type SayHello struct {
 	Actor
 }
 
-// Recv to match Spawn required
-func (s *SayHello) Recv() chan interface{} {
-	s.receive = make(chan interface{})
-	return s.receive
-}
-
 // Fun is another standard
 // Start an actor by Spawn need to implement this method
 func (s *SayHello) Fun(i int) {

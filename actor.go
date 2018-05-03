@@ -12,6 +12,12 @@ type Actor struct {
 	receive chan interface{}
 }
 
+// Recv return actor's pid
+func (a *Actor) Recv() chan interface{} {
+	a.receive = make(chan interface{})
+	return a.receive
+}
+
 // Actorable is interface prepare for Spawn.
 // With it, you can have a way to return PID(concept, is a channel in fact) in Spawn!
 type Actorable interface {
