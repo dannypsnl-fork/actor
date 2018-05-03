@@ -12,15 +12,19 @@ type Actor struct {
 	Receive chan interface{}
 }
 
+func (a *Actor) Init() {
+	a.Receive = make(chan interface{})
+}
+
 // Pid return actor's pid
 func (a *Actor) Pid() chan interface{} {
-	a.Receive = make(chan interface{})
 	return a.Receive
 }
 
 // Actorable is interface prepare for Spawn.
 // With it, you can have a way to return PID(concept, is a channel in fact) in Spawn!
 type Actorable interface {
+	Init()
 	Pid() chan interface{}
 }
 
@@ -54,6 +58,7 @@ func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
 	for k, in := range startArgs {
 		inputs[k] = reflect.ValueOf(in)
 	}
+	actor.Init()
 	go act.Call(inputs)
 	return actor.Pid()
 }

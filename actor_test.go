@@ -41,7 +41,9 @@ func TestSpawn(t *testing.T) {
 }
 
 func TestActorUsingSelf(t *testing.T) {
-	sayHi := &SayHello{}
+	sayHi := &SayHello{
+		Actor: Actor{make(chan interface{})},
+	}
 	go sayHi.Fun(10)
 	recv := make(chan int)
 	defer close(recv)
