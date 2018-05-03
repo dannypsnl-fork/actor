@@ -6,14 +6,20 @@ import (
 	"reflect"
 )
 
+// Actor contains a receive channel help user don't need to understand how actor work at first.
+// Just embedded Actor into their custom actor to use it
 type Actor struct {
 	receive chan interface{}
 }
 
+// Actorable is interface prepare for Spawn.
+// With it, you can have a way to return PID(concept, is a channel in fact) in Spawn!
 type Actorable interface {
 	Recv() chan interface{}
 }
 
+// Spawn help user start an actor like Erlang way.
+// The Actor can execute in Spawn require method Fun & match interface Actorable
 func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
 	act := reflect.ValueOf(actor).MethodByName("Fun")
 	var buf bytes.Buffer
