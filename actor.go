@@ -47,7 +47,7 @@ func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
 		panic(fmt.Sprintf("expected: %s, but receive: %s", expected, input))
 	}
 	if act.Type().NumOut() > 0 {
-		panic("expected no return!!!")
+		panic("expected actor Fun no return!!!")
 	}
 
 	inputs := make([]reflect.Value, len(startArgs))

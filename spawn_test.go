@@ -30,3 +30,22 @@ func TestSpawnInvaildParameters(t *testing.T) {
 	// expected use int start sayHi.Fun
 	Spawn(sayHi, []interface{}{"Hi"})
 }
+
+type wrongFun struct {
+	Actor
+}
+
+func (w *wrongFun) Fun() int {
+	return 1
+}
+
+func TestActorFunShouldNotReturn(t *testing.T) {
+	defer func() {
+		expected := "expected actor Fun no return!!!"
+		if r := recover(); r != expected {
+			t.Errorf("expected: `%s`, actual: `%s`", expected, r)
+		}
+	}()
+	a := &wrongFun{}
+	Spawn(a, []interface{}{})
+}
