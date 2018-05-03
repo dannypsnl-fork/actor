@@ -44,7 +44,7 @@ func TestActorUsingSelf(t *testing.T) {
 	go sayHi.Fun(10)
 	recv := make(chan int)
 	defer close(recv)
-	pid := sayHi.Recv()
+	pid := sayHi.Pid()
 	pid <- intWithRecv{recv, 10}
 	result := <-recv
 	if result != 20 {
