@@ -1,5 +1,11 @@
 package actor
 
+import (
+	"bytes"
+	"fmt"
+	"reflect"
+)
+
 type Actor struct {
 	receive chan interface{}
 }
@@ -9,7 +15,7 @@ type Actorable interface {
 }
 
 func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
-	act := reflect.ValueOf(actor).MethodByName("Do")
+	act := reflect.ValueOf(actor).MethodByName("Fun")
 	var buf bytes.Buffer
 	for _, v := range startArgs {
 		t := reflect.TypeOf(v)

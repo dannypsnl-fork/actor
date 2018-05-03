@@ -3,7 +3,6 @@ package actor
 import (
 	"testing"
 
-	"bytes"
 	"fmt"
 	"reflect"
 )
@@ -17,7 +16,7 @@ func (s *SayHello) Recv() chan interface{} {
 	return s.receive
 }
 
-func (s *SayHello) Do(i int) {
+func (s *SayHello) Fun(i int) {
 	msg := <-s.receive
 	fmt.Println(i + msg.(int))
 	close(s.receive)
