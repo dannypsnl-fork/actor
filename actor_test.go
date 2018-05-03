@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"fmt"
-	"reflect"
 )
 
 type SayHello struct {
@@ -28,9 +27,9 @@ func TestSpawn(t *testing.T) {
 	pid <- 30
 }
 
-func TestReflect(t *testing.T) {
+func TestActorUsingSelf(t *testing.T) {
 	sayHi := &SayHello{}
-	method := reflect.ValueOf(sayHi).MethodByName("Do")
-
-	fmt.Printf("%v\n", method)
+	go sayHi.Fun(10)
+	pid := sayHi.Recv()
+	pid <- 30
 }
