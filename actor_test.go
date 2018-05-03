@@ -2,8 +2,6 @@ package actor
 
 import (
 	"testing"
-
-	"fmt"
 )
 
 type SayHello struct {
@@ -17,19 +15,41 @@ func (s *SayHello) Recv() chan interface{} {
 
 func (s *SayHello) Fun(i int) {
 	msg := <-s.receive
-	fmt.Println(i + msg.(int))
+	switch msg.(type) {
+	case intWithRecv:
+		msg.(intWithRecv).recv <- msg.(intWithRecv).value + i
+	default:
+		panic("This actor do not handle this kind of message")
+	}
 	close(s.receive)
+}
+
+type intWithRecv struct {
+	recv  chan int
+	value int
 }
 
 func TestSpawn(t *testing.T) {
 	sayHi := &SayHello{}
 	pid := Spawn(sayHi, []interface{}{3})
-	pid <- 30
+	recv := make(chan int)
+	defer close(recv)
+	pid <- intWithRecv{recv, 10}
+	result := <-recv
+	if result != 13 {
+		t.Errorf("result: %d", result)
+	}
 }
 
 func TestActorUsingSelf(t *testing.T) {
 	sayHi := &SayHello{}
 	go sayHi.Fun(10)
+	recv := make(chan int)
+	defer close(recv)
 	pid := sayHi.Recv()
-	pid <- 30
+	pid <- intWithRecv{recv, 10}
+	result := <-recv
+	if result != 20 {
+		t.Errorf("result: %d", result)
+	}
 }
