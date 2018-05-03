@@ -28,6 +28,9 @@ type Actorable interface {
 // The Actor can execute in Spawn require method Fun & match interface Actorable
 func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
 	act := reflect.ValueOf(actor).MethodByName("Fun")
+	if act.Kind() == reflect.Invalid {
+		panic("Spawn expected actor have method Fun")
+	}
 	var buf bytes.Buffer
 	for _, v := range startArgs {
 		t := reflect.TypeOf(v)
