@@ -12,14 +12,15 @@ type SayHello struct {
 // Fun is another standard
 // Start an actor by Spawn need to implement this method
 func (s *SayHello) Fun(i int) {
-	msg := <-s.receive
+	defer close(s.Receive)
+	msg := <-s.Receive
 	switch msg.(type) {
 	case intWithRecv:
-		msg.(intWithRecv).recv <- msg.(intWithRecv).value + i
+		resp := msg.(intWithRecv).value + i
+		msg.(intWithRecv).recv <- resp
 	default:
 		panic("This actor do not handle this kind of message")
 	}
-	close(s.receive)
 }
 
 type intWithRecv struct {

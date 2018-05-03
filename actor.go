@@ -9,13 +9,13 @@ import (
 // Actor contains a receive channel help user don't need to understand how actor work at first.
 // Just embedded Actor into their custom actor to use it
 type Actor struct {
-	receive chan interface{}
+	Receive chan interface{}
 }
 
 // Pid return actor's pid
 func (a *Actor) Pid() chan interface{} {
-	a.receive = make(chan interface{})
-	return a.receive
+	a.Receive = make(chan interface{})
+	return a.Receive
 }
 
 // Actorable is interface prepare for Spawn.
