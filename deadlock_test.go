@@ -18,14 +18,7 @@ func (e *EchoServer) Fun() {
 	}
 }
 
-type msgWith struct {
-	sender  chan string
-	content string
-}
-
-type closing struct{}
-
-func TestActorShouldNotAtReAskPidPanic(t *testing.T) {
+func TestActorShouldNotPanicWhenReAskPid(t *testing.T) {
 	defer func() {
 		if r := recover(); r != nil {
 			t.Error(r)
@@ -49,3 +42,10 @@ func TestActorShouldNotAtReAskPidPanic(t *testing.T) {
 	<-self
 	echoServer <- closing{}
 }
+
+type msgWith struct {
+	sender  chan string
+	content string
+}
+
+type closing struct{}
