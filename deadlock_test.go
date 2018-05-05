@@ -12,9 +12,8 @@ func (e *EchoServer) Fun() {
 	msg := <-e.Receive
 	if v, ok := msg.(msgWith); ok {
 		v.sender <- v.content
-		go e.Fun()
-	}
-	if _, ok := msg.(closing); ok {
+		e.Fun()
+	} else if _, ok := msg.(closing); ok {
 		close(e.Receive)
 	}
 }
