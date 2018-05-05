@@ -21,16 +21,16 @@ func (a *Actor) Pid() chan interface{} {
 	return a.Receive
 }
 
-// Actorable is interface prepare for Spawn.
+// actorable is interface prepare for Spawn.
 // With it, you can have a way to return PID(concept, is a channel in fact) in Spawn!
-type Actorable interface {
+type actorable interface {
 	Init()
 	Pid() chan interface{}
 }
 
 // Spawn help user start an actor like Erlang way.
 // The Actor can execute in Spawn require method Fun & match interface Actorable
-func Spawn(actor Actorable, startArgs []interface{}) chan interface{} {
+func Spawn(actor actorable, startArgs []interface{}) chan interface{} {
 	act := reflect.ValueOf(actor).MethodByName("Fun")
 	if act.Kind() == reflect.Invalid {
 		panic("Spawn expected actor have method Fun")
