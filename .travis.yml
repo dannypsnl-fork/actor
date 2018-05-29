@@ -38,6 +38,6 @@ before_script:
 script:
   - go test -v
   - overalls -project=github.com/dannypsnl/actor
-  - goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken ibfn8Gov1sjZJXyr32hPLrfWnjZTwDcVC
+  - goveralls -coverprofile=overalls.coverprofile -service=travis-ci -repotoken n6gm3fU2Q7LD2IROXTQRy54zgnXjQY4Qr
   - go vet ./
 
